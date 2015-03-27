@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="iosuModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CONTACTS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="AGENT_FULL_NAME" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ADRESS" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PHONE_NUMBER" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="FK_PRODUCT_ID" Type="bigint" Nullable="false" />
+          <Property Name="AMOUNT" Type="bigint" Nullable="false" />
+          <Property Name="PRICE" Type="bigint" Nullable="false" />
+          <Property Name="FK_PARTNER_ID" Type="bigint" Nullable="false" />
+          <Property Name="ORDER_TYPE" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PARTNERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="FK_CONTACT_ID" Type="bigint" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="PRTNER_TYPE" Type="bigint" />
+        </EntityType>
+        <EntityType Name="PRODUCTS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FK_MANUFACTURER_ID" Type="bigint" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="bigint" Nullable="false" />
+          <Property Name="AMOUNT" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ORDERS_PARTNERS">
+          <End Role="PARTNERS" Type="Self.PARTNERS" Multiplicity="1" />
+          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARTNERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="FK_PARTNER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERS_PRODUCTS">
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="1" />
+          <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="FK_PRODUCT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PARTNERS_CONTACTS">
+          <End Role="CONTACTS" Type="Self.CONTACTS" Multiplicity="1" />
+          <End Role="PARTNERS" Type="Self.PARTNERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONTACTS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PARTNERS">
+              <PropertyRef Name="FK_CONTACT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTS_PARTNERS">
+          <End Role="PARTNERS" Type="Self.PARTNERS" Multiplicity="1" />
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARTNERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="FK_MANUFACTURER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="iosuModelStoreContainer">
+          <EntitySet Name="CONTACTS" EntityType="Self.CONTACTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PARTNERS" EntityType="Self.PARTNERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ORDERS_PARTNERS" Association="Self.FK_ORDERS_PARTNERS">
+            <End Role="PARTNERS" EntitySet="PARTNERS" />
+            <End Role="ORDERS" EntitySet="ORDERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERS_PRODUCTS" Association="Self.FK_ORDERS_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+            <End Role="ORDERS" EntitySet="ORDERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PARTNERS_CONTACTS" Association="Self.FK_PARTNERS_CONTACTS">
+            <End Role="CONTACTS" EntitySet="CONTACTS" />
+            <End Role="PARTNERS" EntitySet="PARTNERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTS_PARTNERS" Association="Self.FK_PRODUCTS_PARTNERS">
+            <End Role="PARTNERS" EntitySet="PARTNERS" />
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="iosuModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Contact" EntityType="iosuModel.Contact" />
+          <EntitySet Name="Order" EntityType="iosuModel.Order" />
+          <EntitySet Name="Partner" EntityType="iosuModel.Partner" />
+          <EntitySet Name="Product" EntityType="iosuModel.Product" />
+          <AssociationSet Name="FK_PARTNERS_CONTACTS" Association="iosuModel.FK_PARTNERS_CONTACTS">
+            <End Role="CONTACTS" EntitySet="Contact" />
+            <End Role="PARTNERS" EntitySet="Partner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERS_PARTNERS" Association="iosuModel.FK_ORDERS_PARTNERS">
+            <End Role="PARTNERS" EntitySet="Partner" />
+            <End Role="ORDERS" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERS_PRODUCTS" Association="iosuModel.FK_ORDERS_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="Product" />
+            <End Role="ORDERS" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTS_PARTNERS" Association="iosuModel.FK_PRODUCTS_PARTNERS">
+            <End Role="PARTNERS" EntitySet="Partner" />
+            <End Role="PRODUCTS" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="AgentFullName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Partner" Relationship="iosuModel.FK_PARTNERS_CONTACTS" FromRole="CONTACTS" ToRole="PARTNERS" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ProductId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Int64" Nullable="false" />
+          <Property Name="Price" Type="Int64" Nullable="false" />
+          <Property Name="PartnerId" Type="Int64" Nullable="false" />
+          <Property Name="OrderType" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Partner" Relationship="iosuModel.FK_ORDERS_PARTNERS" FromRole="ORDERS" ToRole="PARTNERS" />
+          <NavigationProperty Name="Product" Relationship="iosuModel.FK_ORDERS_PRODUCTS" FromRole="ORDERS" ToRole="PRODUCTS" />
+        </EntityType>
+        <EntityType Name="Partner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ContactId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PartnerType" Type="Int64" />
+          <NavigationProperty Name="Contact" Relationship="iosuModel.FK_PARTNERS_CONTACTS" FromRole="PARTNERS" ToRole="CONTACTS" />
+          <NavigationProperty Name="ORDERS" Relationship="iosuModel.FK_ORDERS_PARTNERS" FromRole="PARTNERS" ToRole="ORDERS" />
+          <NavigationProperty Name="PRODUCTS" Relationship="iosuModel.FK_PRODUCTS_PARTNERS" FromRole="PARTNERS" ToRole="PRODUCTS" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ManufacturerId" Type="Int64" Nullable="false" />
+          <Property Name="UnitPrice" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="ORDERS" Relationship="iosuModel.FK_ORDERS_PRODUCTS" FromRole="PRODUCTS" ToRole="ORDERS" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Internal" />
+          <NavigationProperty Name="PARTNERS" Relationship="iosuModel.FK_PRODUCTS_PARTNERS" FromRole="PRODUCTS" ToRole="PARTNERS" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Internal" />
+        </EntityType>
+        <Association Name="FK_PARTNERS_CONTACTS">
+          <End Type="iosuModel.Contact" Role="CONTACTS" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="iosuModel.Partner" Role="PARTNERS" Multiplicity="*" >
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="CONTACTS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PARTNERS">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERS_PARTNERS">
+          <End Type="iosuModel.Partner" Role="PARTNERS" Multiplicity="1" />
+          <End Type="iosuModel.Order" Role="ORDERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARTNERS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="PartnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERS_PRODUCTS">
+          <End Type="iosuModel.Product" Role="PRODUCTS" Multiplicity="1" />
+          <End Type="iosuModel.Order" Role="ORDERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDERS">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTS_PARTNERS">
+          <End Type="iosuModel.Partner" Role="PARTNERS" Multiplicity="1" />
+          <End Type="iosuModel.Product" Role="PRODUCTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARTNERS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="iosuModelStoreContainer" CdmEntityContainer="Entities" >
+          <EntitySetMapping Name="Contact">
+            <EntityTypeMapping TypeName="iosuModel.Contact">
+              <MappingFragment StoreEntitySet="CONTACTS">
+                <ScalarProperty Name="PhoneNumber" ColumnName="PHONE_NUMBER" />
+                <ScalarProperty Name="Adress" ColumnName="ADRESS" />
+                <ScalarProperty Name="AgentFullName" ColumnName="AGENT_FULL_NAME" />
+                <ScalarProperty Name="Id" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="iosuModel.Order">
+              <MappingFragment StoreEntitySet="ORDERS">
+                <ScalarProperty Name="OrderType" ColumnName="ORDER_TYPE" />
+                <ScalarProperty Name="PartnerId" ColumnName="FK_PARTNER_ID" />
+                <ScalarProperty Name="Price" ColumnName="PRICE" />
+                <ScalarProperty Name="Amount" ColumnName="AMOUNT" />
+                <ScalarProperty Name="ProductId" ColumnName="FK_PRODUCT_ID" />
+                <ScalarProperty Name="Id" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Partner">
+            <EntityTypeMapping TypeName="iosuModel.Partner">
+              <MappingFragment StoreEntitySet="PARTNERS">
+                <ScalarProperty Name="PartnerType" ColumnName="PRTNER_TYPE" />
+                <ScalarProperty Name="Name" ColumnName="NAME" />
+                <ScalarProperty Name="ContactId" ColumnName="FK_CONTACT_ID" />
+                <ScalarProperty Name="Id" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="iosuModel.Product">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="Amount" ColumnName="AMOUNT" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UNIT_PRICE" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="FK_MANUFACTURER_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Name" ColumnName="NAME" />
+                <ScalarProperty Name="Id" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
