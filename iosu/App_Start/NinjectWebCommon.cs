@@ -1,6 +1,7 @@
 using iosu.DAO;
+using iosu.Helpers.Response;
 using iosu.Interfaces.DAO;
-using iosu.Models;
+using iosu.Interfaces.ResponseHelpers;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(iosu.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(iosu.App_Start.NinjectWebCommon), "Stop")]
@@ -65,11 +66,13 @@ namespace iosu.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
             kernel.Bind<IContactsRepository>().To<ContactsRepository>();
             kernel.Bind<IProductRepository>().To<ProductsRepository>();
             kernel.Bind<IPartnersRepository>().To<PartnersRepository>();
             kernel.Bind<IOrdersRepository>().To<OrdersRepository>();
+            kernel.Bind<IPartnerResponseHelper>().To<PartnersResponseHelper>();
+            kernel.Bind<IProductResponseHelper>().To<ProductsResponseHelper>();
+            kernel.Bind<IOrdersResponseHelper>().To<OrdersResponseHelper>();
         }        
     }
 }

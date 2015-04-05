@@ -1,6 +1,8 @@
-﻿namespace iosu.Interfaces.DAO
+﻿using iosu.Entities;
+
+namespace iosu.Interfaces.DAO
 {
-    interface IProductRepository : IRepository<Product>
+    public interface IProductRepository : IRepository<Product>
     {
     }
 }

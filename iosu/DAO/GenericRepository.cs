@@ -1,81 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using iosu.Interfaces.DAO;
-using iosu.Models;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace iosu.DAO
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private ApplicationDbContext context;
+        protected readonly ISession Session;
 
-        public GenericRepository(ApplicationDbContext context)
+        public GenericRepository()
         {
-            this.context = context;
+            Session = NHibernateHelper.OpenSession<TEntity>();
         }
 
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "")
+        public virtual IEnumerable<TEntity> GetAll()
         {
-            IQueryable<TEntity> query = context.Set<TEntity>();
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
+            return Session.Query<TEntity>().ToList();
         }
 
-        public TEntity GetByID(object id)
+        public virtual TEntity GetById(object id)
         {
-            return context.Set<TEntity>().Find(id);
+            return Session.Get<TEntity>(id);
         }
 
-        public void Insert(TEntity entity)
+        public virtual TEntity SaveOrUpdate(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
+            Session.SaveOrUpdate(entity);
+            Session.Flush();
+            return entity;
         }
 
-        public void Delete(object id)
+        public virtual void Delete(long id)
         {
-            TEntity entityToDelete = context.Set<TEntity>().Find(id);
-            Delete(entityToDelete);
-        }
-
-        public void Delete(TEntity entityToDelete)
-        {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
-            {
-                context.Set<TEntity>().Attach(entityToDelete);
-            }
-            context.Set<TEntity>().Remove(entityToDelete);
-            context.SaveChanges();
-        }
-
-        public void Update(TEntity entityToUpdate)
-        {
-            context.Set<TEntity>().Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
-            context.SaveChanges();
+            TEntity obj = GetById(id);
+            Session.Delete(obj);
+            Session.Flush();
         }
     }
 }

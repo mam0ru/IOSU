@@ -1,0 +1,66 @@
+﻿@model iosu.Entities.Partner
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.AgentFullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.AgentFullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.Adress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PartnerType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PartnerType)
+        </dd>
+    </dl>
+</div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

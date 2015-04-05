@@ -1,0 +1,53 @@
+﻿@model iosu.Entities.Partner
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.AgentFullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.AgentFullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.Adress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contact.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PartnerType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PartnerType)
+        </dd>
+    </dl>
+</div>

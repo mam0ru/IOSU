@@ -1,6 +1,8 @@
-﻿namespace iosu.Interfaces.DAO
+﻿using iosu.Entities;
+
+namespace iosu.Interfaces.DAO
 {
-    interface IPartnersRepository : IRepository<Partner>
+    public interface IPartnersRepository : IRepository<Partner>
     {
     }
 }
