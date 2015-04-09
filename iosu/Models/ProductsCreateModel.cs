@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using iosu.Entities;
-using iosu.Interfaces.DAO;
 
 namespace iosu.Models
 {
     public class ProductsCreateModel
     {
         public long Id { get; set; }
+        [MaxLength(200)]
         public String Name { get; set; }
+        [MaxLength(1000)]        
         public String Description { get; set; }
+        [DisplayName("Unit price")]        
         public long UnitPrice { get; set; }
         public long Amount { get; set; }
-
         public String ManufacturerIds { get; set; }
-        public ProductsCreateModel()
-        {
-        }
 
         public Product ToEntity()
         {

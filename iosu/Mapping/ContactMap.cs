@@ -1,5 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
-using iosu.Models;
+using iosu.Entities;
 
 namespace iosu.Mapping
 {

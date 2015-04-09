@@ -10,10 +10,10 @@ namespace iosu.Mapping
             Table("Partners");
 
             Id(partner => partner.Id);
-            Map(partner => partner.Name);
+            Map(partner => partner.Name).Unique();
             Map(partner => partner.PartnerType);
 
-            References(partner => partner.Contact).Column("ContactId").Cascade.All().Unique();
+            References(partner => partner.Contact).Column("ContactId").Unique();
         }  
     }
 }

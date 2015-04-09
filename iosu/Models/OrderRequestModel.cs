@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web.Mvc;
 using iosu.Entities;
@@ -9,10 +10,13 @@ namespace iosu.Models
     public class OrderRequestModel
     {
         public long Id { get; set; }
+        [DisplayName("Product")]
         public IEnumerable<SelectListItem> ProductIds { get; set; }
         public long Amount { get; set; }
         public long Price { get; set; }
+        [DisplayName("Partner")]
         public IEnumerable<SelectListItem> PartnerIds { get; set; }
+        [DisplayName("Order type")]
         public OrderType OrderType { get; set; }
 
         public OrderRequestModel()

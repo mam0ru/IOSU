@@ -1,5 +1,5 @@
-﻿using iosu.Interfaces.DAO;
-using iosu.Models;
+﻿using iosu.Entities;
+using iosu.Interfaces.DAO;
 
 namespace iosu.DAO
 {

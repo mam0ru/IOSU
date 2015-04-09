@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using iosu.Entities;
 
 namespace iosu.Models
 {
@@ -17,7 +18,7 @@ namespace iosu.Models
 
         public System.Data.Entity.DbSet<iosu.Entities.Partner> Partners { get; set; }
 
-        public System.Data.Entity.DbSet<iosu.Models.Contact> Contacts { get; set; }
+        public System.Data.Entity.DbSet<Contact> Contacts { get; set; }
 
         public System.Data.Entity.DbSet<iosu.Entities.Product> Products { get; set; }
 

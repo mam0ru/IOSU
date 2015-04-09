@@ -14,8 +14,8 @@ namespace iosu.Mapping
             Map(order => order.Amount);
             Map(order => order.Price);
 
-            References(order => order.Partner).Column("PartnerId").Cascade.None().Unique();
-            References(order => order.Product).Column("ProductId").Cascade.None();//one-to-many implement !
+            References(order => order.Partner).Column("PartnerId");
+            References(order => order.Product).Column("ProductId");//one-to-many implement !
         }
     }
 }

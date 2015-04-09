@@ -1,4 +1,4 @@
-﻿using iosu.Models;
+﻿using iosu.Entities;
 
 namespace iosu.Interfaces.DAO
 {

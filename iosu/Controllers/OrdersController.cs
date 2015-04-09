@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Interfaces.ResponseHelpers;
@@ -47,13 +46,14 @@ namespace iosu.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
         {
+            OrdersResponseHelper.Validate(ModelState, orderResponse);
             if (ModelState.IsValid)
             {
                 OrdersResponseHelper.SaveOrder(orderResponse);
                 return RedirectToAction("Index");
             }
-
-            return View(orderResponse);
+            OrderRequestModel orderRequest = OrdersResponseHelper.ConvertResponseObjectToRequestObject(orderResponse);
+            return View(orderRequest);
         }
 
         public ActionResult Edit(long? id)
@@ -72,14 +72,16 @@ namespace iosu.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel order)
+        public ActionResult Edit([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
         {
+            OrdersResponseHelper.Validate(ModelState, orderResponse);
             if (ModelState.IsValid)
             {
-                OrdersResponseHelper.SaveOrder(order);
+                OrdersResponseHelper.SaveOrder(orderResponse);
                 return RedirectToAction("Index");
             }
-            return View(order);
+            OrderRequestModel orderRequest = OrdersResponseHelper.ConvertResponseObjectToRequestObject(orderResponse);
+            return View(orderRequest);
         }
 
         public ActionResult Delete(long? id)
