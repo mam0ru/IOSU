@@ -13,6 +13,7 @@ namespace iosu.Entities
         [DisplayName("Partner type")]
         public virtual PartnerType PartnerType { get; set; }
 
+        public virtual long ContactId { get; set; }
         public virtual Contact Contact { get; set; }
     }
 }

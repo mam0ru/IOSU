@@ -73,6 +73,7 @@ namespace iosu.App_Start
             kernel.Bind<IPartnerResponseHelper>().To<PartnersResponseHelper>();
             kernel.Bind<IProductResponseHelper>().To<ProductsResponseHelper>();
             kernel.Bind<IOrdersResponseHelper>().To<OrdersResponseHelper>();
+            kernel.Bind<IStoreRepository>().To<StoreRepository>();
         }        
     }
 }

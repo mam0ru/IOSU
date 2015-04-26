@@ -2,7 +2,9 @@
 using System.Linq;
 using iosu.Interfaces.DAO;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Linq;
+using Order = iosu.Entities.Order;
 
 namespace iosu.DAO
 {
@@ -37,6 +39,17 @@ namespace iosu.DAO
             TEntity obj = GetById(id);
             Session.Delete(obj);
             Session.Flush();
+        }
+
+        public virtual IEnumerable<TEntity> GetBySearchParameters(IBaseSearchParameters parameters)
+        {
+            var criteria = Session.CreateCriteria<Order>();
+            AddRestrictions(criteria, parameters);
+            return criteria.List<TEntity>();
+        }
+
+        protected virtual void AddRestrictions(ICriteria criteria, IBaseSearchParameters parameters)
+        {
         }
     }
 }

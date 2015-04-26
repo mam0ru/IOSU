@@ -11,5 +11,7 @@ namespace iosu.Interfaces.DAO
         TEntity SaveOrUpdate(TEntity entity);
 
         void Delete(long id);
+
+        IEnumerable<TEntity> GetBySearchParameters(IBaseSearchParameters parameters);
     }
 }

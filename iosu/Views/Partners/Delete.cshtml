@@ -1,66 +1,64 @@
 ﻿@model iosu.Entities.Partner
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = String.Format("{0} Delete", Model.Name);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact.AgentFullName)
-        </dt>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Contact.AgentFullName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact.Adress)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.PartnerType)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Contact.Adress)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.PartnerType)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Contact.AgentFullName)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Contact.AgentFullName)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Contact.PhoneNumber)
-        </dd>
-    </dl>
-</div>
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Contact.Adress)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Contact.Adress)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PartnerType)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.PartnerType)
-        </dd>
-    </dl>
-</div>
+            <dd>
+                @Html.DisplayFor(model => model.Contact.PhoneNumber)
+            </dd>
+        </dl>
+    </div>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index", null, new {@class = "btn btn-default"})
         </div>
     }
 </div>

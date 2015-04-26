@@ -1,8 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Interfaces.ResponseHelpers;
 using iosu.Models;
+using Newtonsoft.Json;
 
 namespace iosu.Controllers
 {
@@ -17,7 +21,7 @@ namespace iosu.Controllers
 
         public ActionResult Index()
         {
-            var orders = OrdersResponseHelper.LoadAll();
+            IList<Order> orders = OrdersResponseHelper.LoadAll();
             return View(orders);
         }
 
@@ -35,11 +39,26 @@ namespace iosu.Controllers
             return View(order);
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             //            OrderCreateViewModel add and use
-            var order = OrdersResponseHelper.GetOrder(0);
+            OrderRequestModel order = OrdersResponseHelper.GetOrder(0);
             return View(order);
+        }
+
+        [HttpPost]
+        public String GetPartners(String type)
+        {
+            IEnumerable<SelectListItem> partners = OrdersResponseHelper.GetPartners((OrderType)Enum.Parse(typeof(OrderType), type));
+            return JsonConvert.SerializeObject(partners.ToArray());
+        }
+
+        [HttpPost]
+        public String GetProducts(String orderType, long? partnerId)
+        {
+            IEnumerable<SelectListItem> products = OrdersResponseHelper.GetProducts((OrderType)Enum.Parse(typeof(OrderType), orderType), partnerId);
+            return JsonConvert.SerializeObject(products.ToArray());
         }
 
         [HttpPost]
@@ -104,6 +123,13 @@ namespace iosu.Controllers
         {
             OrdersResponseHelper.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult BiggestOrders()
+        {
+            IEnumerable<Order> orders = OrdersResponseHelper.GetBigestOrders();
+            return View(orders);
         }
     }
 }

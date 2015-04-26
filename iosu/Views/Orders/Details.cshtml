@@ -1,4 +1,5 @@
-﻿@model iosu.Entities.Order
+﻿@using iosu.Entities
+@model iosu.Entities.Order
 
 @{
     ViewBag.Title = "Details";
@@ -7,53 +8,60 @@
 
 <h2>Details</h2>
 
-<div>
+<div class="row">
     <h4>Order</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Partner.Name)
-        </dt>
+    <div class="row">
+        <div class="col-md-3">
+            @if (Model.OrderType == OrderType.Buy)
+            {
+                <label class="text-left">
+                    Manufacturer name:
+                </label>
+            }
+            else
+            {
+                <label class="text-left">
+                    Customer name:
+                </label>
+            }
+        </div>
 
-        <dd>
+        <div class="col-md-3">
             @Html.DisplayFor(model => model.Partner.Name)
-        </dd>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Name)
-        </dt>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Product name</label>
+        </div>
 
-        <dd>
+        <div class="col-md-3">
             @Html.DisplayFor(model => model.Product.Name)
-        </dd>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Amount)
+        </div>
 
-        <dd>
+        <div class="col-md-3">
             @Html.DisplayFor(model => model.Amount)
-        </dd>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Price)
+        </div>
 
-        <dd>
+        <div class="col-md-3">
             @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderType)
-        </dd>
-
-    </dl>
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new {@class = "btn btn-default"})
 </p>

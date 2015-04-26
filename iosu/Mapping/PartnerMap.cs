@@ -13,7 +13,7 @@ namespace iosu.Mapping
             Map(partner => partner.Name).Unique();
             Map(partner => partner.PartnerType);
 
-            References(partner => partner.Contact).Column("ContactId").Unique();
+            Map(partner => partner.ContactId).Column("ContactId");
         }  
     }
 }

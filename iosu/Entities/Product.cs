@@ -14,6 +14,7 @@ namespace iosu.Entities
         [DisplayName("Unit price")]
         public virtual long UnitPrice { get; set; }
         public virtual long Amount { get; set; }
+        [DisplayName("Manufacturer")]
         public virtual Partner Manufacturer { get; set; }
     }
 }

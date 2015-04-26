@@ -1,53 +1,131 @@
-﻿@model iosu.Entities.Partner
+﻿@model iosu.Models.View.PartnerDetailsViewModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = String.Format("Details {0}", Model.Partner.Name);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Details</h2>
 <div>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Contact.AgentFullName)
+            @Html.DisplayNameFor(model => model.Partner.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Contact.AgentFullName)
+            @Html.DisplayFor(model => model.Partner.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Contact.Adress)
+            @Html.DisplayNameFor(model => model.Partner.PartnerType)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Contact.Adress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Contact.PhoneNumber)
+            @Html.DisplayFor(model => model.Partner.PartnerType)
         </dd>
     </dl>
 </div>
 <div>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Partner.Contact.AgentFullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Partner.Contact.AgentFullName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PartnerType)
+            @Html.DisplayNameFor(model => model.Partner.Contact.Adress)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PartnerType)
+            @Html.DisplayFor(model => model.Partner.Contact.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Partner.Contact.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Partner.Contact.PhoneNumber)
         </dd>
     </dl>
+</div>
+<div class="row thumbnail">
+    @{
+        if (Model.Products != null && Model.Products.Any())
+        {
+            <h3>Products:</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Product name</p>
+                </div>
+                <div class="col-md-4">
+                    <p>Amount</p>
+                </div>
+                <div class="col-md-4">
+                    <p>Unit price</p>
+                </div>
+            </div>
+            foreach (var product in Model.Products)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>@product.Name</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>@product.Amount</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>@product.UnitPrice</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row text-center">
+                <h2>No Products</h2>
+            </div>
+        }
+}
+</div>
+<div class="row thumbnail">
+    @Html.ActionLink("Create Order", "Create", "Orders", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })
+    @{
+        if (Model.Orders.Any())
+        {
+            <h3>Orders:</h3>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Product name</p>
+                </div>
+                <div class="col-md-4">
+                    <p>Amount</p>
+                </div>
+                <div class="col-md-4">
+                    <p>Unit price</p>
+                </div>
+            </div>
+            foreach (var order in Model.Orders)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>@order.Product.Name</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>@order.Amount</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>@order.Price</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row text-center">
+                <h2>No Orders</h2>
+            </div>
+        }
+    }
 </div>

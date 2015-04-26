@@ -1,19 +1,15 @@
 ﻿@model iosu.Models.ProductsCreateViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create new product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Create</h2>
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Product</h4>
-        <hr />
+        <br />
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -34,7 +30,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ManufacturerIds, "Manufacturer", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(product => product.ManufacturerIds, null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(product => product.ManufacturerIds, null, new {  @class = "btn btn-default dropdown-toggle btn-lg", style = "width:100%;" })
                 @Html.ValidationMessageFor(model => model.ManufacturerIds, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,5 +60,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new {@class = "btn btn-default"})
 </div>

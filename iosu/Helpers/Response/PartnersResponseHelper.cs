@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using iosu.Entities;
+using iosu.Enums;
 using iosu.Interfaces.DAO;
 using iosu.Interfaces.ResponseHelpers;
+using iosu.Models.View;
 
 namespace iosu.Helpers.Response
 {
     public class PartnersResponseHelper: IPartnerResponseHelper
     {
         private readonly IPartnersRepository PartnersRepository;
+        private readonly IProductResponseHelper ProductResponseHelper;
+        private IOrdersResponseHelper OrdersResponseHelper;
 
-        public PartnersResponseHelper(IPartnersRepository partnersRepository)
+        public PartnersResponseHelper(IPartnersRepository partnersRepository, IProductResponseHelper productResponseHelper, IOrdersResponseHelper ordersResponseHelper)
         {
             PartnersRepository = partnersRepository;
+            ProductResponseHelper = productResponseHelper;
+            OrdersResponseHelper = ordersResponseHelper;
         }
 
         public IList<Partner> LoadAll()
@@ -34,6 +40,18 @@ namespace iosu.Helpers.Response
         public void Delete(long id)
         {
             PartnersRepository.Delete(id);
+        }
+
+        public PartnerDetailsViewModel GetPartnerDetailsViewModel(long? id)
+        {
+            var viewModel = new PartnerDetailsViewModel();
+            viewModel.Partner = PartnersRepository.GetById(id);
+            if (viewModel.Partner.PartnerType == PartnerType.Manufacturer)
+            {
+                viewModel.Products = ProductResponseHelper.LoadAll().Where(product => product.ManufacturerId == viewModel.Partner.Id);
+            }
+            viewModel.Orders = OrdersResponseHelper.LoadAll().Where(order => order.PartnerId == viewModel.Partner.Id);
+            return viewModel;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Interfaces.ResponseHelpers;
+using iosu.Models.View;
 
 namespace iosu.Controllers
 {
@@ -29,9 +30,9 @@ namespace iosu.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Partner viewModel = PartnerResponseHelper.GetEntityById(id);
+            PartnerDetailsViewModel viewModel = PartnerResponseHelper.GetPartnerDetailsViewModel(id);
 
-            if (viewModel == null || viewModel.Contact == null)
+            if (viewModel == null || viewModel.Partner.Contact == null)
             {
                 return HttpNotFound();
             }
