@@ -14,6 +14,8 @@ namespace iosu.Mapping
             Map(partner => partner.PartnerType);
 
             Map(partner => partner.ContactId).Column("ContactId");
+
+            References(partner => partner.Contact).Column("ContactId").LazyLoad().Not.Insert().Not.Update();
         }  
     }
 }

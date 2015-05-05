@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Interfaces.ResponseHelpers;
@@ -35,6 +36,7 @@ namespace iosu.Controllers
             return View(product);
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             ProductsCreateViewModel productVM = ProductResponseHelper.GetProduct(0);
@@ -45,6 +47,7 @@ namespace iosu.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,ManufacturerIds,UnitPrice,Amount")] ProductsCreateModel product)
         {
+            ProductResponseHelper.Validate(ModelState, product);
             if (ModelState.IsValid)
             {
                 ProductResponseHelper.SaveProduct(product);
@@ -99,6 +102,13 @@ namespace iosu.Controllers
         {
             ProductResponseHelper.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Report()
+        {
+            IEnumerable<Partner> reportInfo = ProductResponseHelper.GetReportInfo();
+            return View(reportInfo);
         }
     }
 }

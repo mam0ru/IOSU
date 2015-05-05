@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Enums;
 using iosu.Interfaces.DAO;
@@ -52,6 +53,26 @@ namespace iosu.Helpers.Response
             }
             viewModel.Orders = OrdersResponseHelper.LoadAll().Where(order => order.PartnerId == viewModel.Partner.Id);
             return viewModel;
+        }
+
+        public void Validate(ModelStateDictionary modelState, Partner partner)
+        {
+            if (partner.Name.Length == 0)
+            {
+                modelState.AddModelError("Name", "Hey! Name must be filled.");
+            }
+            if (partner.Contact.AgentFullName.Length == 0)
+            {
+                modelState.AddModelError("Contact.AgentFullName", "Hey! Agent Fullname must be filled.");
+            }
+            if (partner.Contact.Adress.Length == 0)
+            {
+                modelState.AddModelError("Contact.Adress", "Hey! Adress must be filled.");
+            }
+            if (partner.Contact.PhoneNumber.Length == 0)
+            {
+                modelState.AddModelError("Contact.PhoneNumber", "Hey! Phone Number must be filled.");
+            }
         }
     }
 }

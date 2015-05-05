@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using iosu.DAO.SearchParameters;
 using iosu.Entities;
 using iosu.Interfaces.DAO;
+using NHibernate;
+using NHibernate.Criterion;
 
 namespace iosu.DAO
 {
@@ -22,21 +25,47 @@ namespace iosu.DAO
             return base.SaveOrUpdate(entity);
         }
 
-        public override IEnumerable<Product> GetAll()
+        public IEnumerable<Partner> GetAllPartnersWithProducts()
         {
-            IEnumerable<Product> results =  base.GetAll();
-            foreach (Product product in results)
+            IEnumerable<Partner> results = PartnersRepository.GetAll();
+            foreach (Partner partner in results)
             {
-                product.Manufacturer = PartnersRepository.GetById(product.ManufacturerId);
+                partner.Products =
+                    GetBySearchParameters(new PartnerSearchParameters
+                    {
+                        ParentId = partner.Id
+                    });
             }
             return results;
         }
 
-        public override Product GetById(object id)
+//        public override IEnumerable<Product> GetAll()
+//        {
+//            IEnumerable<Product> results =  base.GetAll();
+//            foreach (Product product in results)
+//            {
+//                product.Manufacturer = PartnersRepository.GetById(product.ManufacturerId);
+//            }
+//            return results;
+//        }
+
+//        public override Product GetById(object id)
+//        {
+//            Product product = base.GetById(id);
+//            product.Manufacturer = PartnersRepository.GetById(product.ManufacturerId);
+//            return product;
+//        }
+
+        protected override void AddRestrictions(ICriteria criteria, IBaseSearchParameters parameters)
         {
-            Product product = base.GetById(id);
-            product.Manufacturer = PartnersRepository.GetById(product.ManufacturerId);
-            return product;
+            var castedParameters = parameters as PartnerSearchParameters;
+            if (castedParameters != null)
+            {
+                if (castedParameters.ParentId.HasValue)
+                {
+                    criteria.Add(Restrictions.Eq("ManufacturerId", castedParameters.ParentId.Value));
+                }
+            }
         }
     }
 }

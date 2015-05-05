@@ -1,4 +1,5 @@
-﻿@model iosu.Models.View.PartnerDetailsViewModel
+﻿@using iosu.Enums
+@model iosu.Models.View.PartnerDetailsViewModel
 @{
     ViewBag.Title = String.Format("Details {0}", Model.Partner.Name);
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -51,42 +52,47 @@
 </div>
 <div class="row thumbnail">
     @{
-        if (Model.Products != null && Model.Products.Any())
+        if (Model.Partner.PartnerType == PartnerType.Manufacturer)
         {
-            <h3>Products:</h3>
-            <div class="row">
-                <div class="col-md-4">
-                    <p>Product name</p>
-                </div>
-                <div class="col-md-4">
-                    <p>Amount</p>
-                </div>
-                <div class="col-md-4">
-                    <p>Unit price</p>
-                </div>
-            </div>
-            foreach (var product in Model.Products)
+            @Html.ActionLink("Create Product", "Create", "Products", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })
+
+            if (Model.Products != null && Model.Products.Any())
             {
+                <h3>Products:</h3>
                 <div class="row">
                     <div class="col-md-4">
-                        <p>@product.Name</p>
+                        <p>Product name</p>
                     </div>
                     <div class="col-md-4">
-                        <p>@product.Amount</p>
+                        <p>Amount</p>
                     </div>
                     <div class="col-md-4">
-                        <p>@product.UnitPrice</p>
+                        <p>Unit price</p>
                     </div>
+                </div>
+                foreach (var product in Model.Products)
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>@product.Name</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>@product.Amount</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>@product.UnitPrice</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="row text-center">
+                    <h2>No Products</h2>
                 </div>
             }
         }
-        else
-        {
-            <div class="row text-center">
-                <h2>No Products</h2>
-            </div>
-        }
-}
+    }
 </div>
 <div class="row thumbnail">
     @Html.ActionLink("Create Order", "Create", "Orders", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })

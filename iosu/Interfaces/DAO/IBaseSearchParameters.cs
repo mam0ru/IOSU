@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace iosu.Interfaces.DAO
+﻿namespace iosu.Interfaces.DAO
 {
     public interface IBaseSearchParameters
     {

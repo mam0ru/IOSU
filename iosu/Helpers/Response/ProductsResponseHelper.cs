@@ -67,5 +67,31 @@ namespace iosu.Helpers.Response
             Product product = productViewModel.ToEntity();
             ProductRepository.SaveOrUpdate(product);
         }
+
+        public IEnumerable<Partner> GetReportInfo()
+        {
+            IEnumerable<Partner> partners = ProductRepository.GetAllPartnersWithProducts();
+            return partners;
+        }
+
+        public void Validate(ModelStateDictionary modelState, ProductsCreateModel product)
+        {
+            if (product.Description.Length == 0)
+            {
+                modelState.AddModelError("Description", "Hey! Description must be filled.");
+            }
+            if (product.Name.Length == 0)
+            {
+                modelState.AddModelError("Name", "Hey! Name must be filled.");
+            }
+            if (product.Amount <= 0)
+            {
+                modelState.AddModelError("Amount", "Realy! You think this is ok?");
+            }
+            if (product.UnitPrice <= 0)
+            {
+                modelState.AddModelError("UnitPrice", "Realy! You think this is ok?");
+            }
+        }
     }
 }

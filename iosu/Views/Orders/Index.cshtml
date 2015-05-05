@@ -5,55 +5,94 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p style="margin: 10px;">
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
-</p>
-<p style="margin: 10px;">
-    @Html.ActionLink("Biggest orders", "BiggestOrders", null, new { @class = "btn btn-default" })
-</p>
-<table class="table">
-    <tr>
-        <th>
+<div class="row">
+    <p class="col-md-1" style="margin: 10px;">
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    </p>
+    <p class="col-md-1" style="margin: 10px;">
+        @Html.ActionLink("Biggest orders", "BiggestOrders", null, new { @class = "btn btn-default" })
+    </p>
+</div>
+<div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
+    @using (Html.BeginForm("ReleasedInPeriod", "Orders"))
+    {
+        <label class="col-md-3">Orders in period. From:</label>
+        <div class="col-md-2">
+            @Html.Editor("from", "from", "from")
+        </div>
+        <label class="col-md-2"> To:</label>
+        <div class="col-md-3">
+            <div id="to" class="">
+                @Html.Editor("to", "to", "to")
+            </div>
+        </div>
+        <input type="submit" class="col-md-2 btn btn-default" value="Get report" />
+    }
+</div>
+<div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
+    @using (Html.BeginForm("SearchOrdersByProductName", "Orders"))
+    {
+        <label class="col-md-2">Product Name part:</label>
+        <div class="col-md-3">
+            @Html.Editor("name", "name", "name")
+        </div>
+        <input type="submit" class="col-md-3 btn btn-default" value="Get orders by product name" />
+    }
+</div>
+<div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
+    @using (Html.BeginForm("SearchOrdersByPartnerName", "Orders"))
+    {
+        <label class="col-md-2">Partner Name part:</label>
+        <div class="col-md-3">
+            @Html.Editor("partnerName", "partnerName", "partnerName")
+        </div>
+        <input type="submit" class="col-md-3 btn btn-default" value="Get orders by product name" />
+    }
+</div>
+
+<div class="row jumbotron">
+    <div class="row" style="font-style: oblique; font-size: 20px;">
+        <div class="col-md-2">
             @Html.DisplayNameFor(model => model.Partner.Name)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-2">
             @Html.DisplayNameFor(model => model.Product.Name)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-2">
             @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-2">
             @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-2">
             @Html.DisplayNameFor(model => model.OrderType)
-        </th>
-        <th></th>
-    </tr>
+        </div>
+        <div class="col-md-2" style="width: 100%"></div>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Partner.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderType)
-        </td>
-        <td>
-@*            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) *@
-            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" })
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <div class="row" style="min-height: 30px; align-items: center;">
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.DisplayFor(modelItem => item.Partner.Name)
+            </div>
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </div>
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.DisplayFor(modelItem => item.Amount)
+            </div>
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.DisplayFor(modelItem => item.Price)
+            </div>
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.DisplayFor(modelItem => item.OrderType)
+            </div>
+            <div class="col-md-2 thumbnail" style="font-size: 14px;  height: 40px; text-align: center;">
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default", style = "font-size: 14px;  height: 100%; text-align: center;" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default", style = "font-size: 14px;  height: 100%; text-align: center;" })
+            </div>
+        </div>
+    }
 
-</table>
+</div>

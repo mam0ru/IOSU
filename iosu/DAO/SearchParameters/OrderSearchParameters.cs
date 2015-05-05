@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using iosu.Interfaces.DAO;
 
 namespace iosu.DAO.SearchParameters
@@ -9,5 +6,9 @@ namespace iosu.DAO.SearchParameters
     public class OrderSearchParameters : IBaseSearchParameters
     {
         public long? Amount { get; set; }
+
+        public DateTime? From { get; set; }
+
+        public DateTime? To { get; set; }
     }
 }

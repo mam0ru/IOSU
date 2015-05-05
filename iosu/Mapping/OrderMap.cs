@@ -13,9 +13,13 @@ namespace iosu.Mapping
             Map(order => order.OrderType);
             Map(order => order.Amount);
             Map(order => order.Price);
+            Map(order => order.CreatedOn);
 
             Map(order => order.PartnerId).Column("PartnerId");
             Map(order => order.ProductId).Column("ProductId");//one-to-many implement !
+
+            References(order => order.Product).Column("ProductId").LazyLoad().Cascade.None().Not.Insert().Not.Update();
+            References(order => order.Partner).Column("PartnerId").LazyLoad().Cascade.None().Not.Insert().Not.Update();
         }
     }
 }

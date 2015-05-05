@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Models;
@@ -7,7 +8,7 @@ namespace iosu.Interfaces.ResponseHelpers
 {
     public interface IOrdersResponseHelper:IBaseResponseHelper<Order>
     {
-        OrderRequestModel GetOrder(long? id);
+        OrderRequestModel GetOrder(long? id, long? partnerId = null);
 
         void SaveOrder(OrderResponseModel productViewModel);
 
@@ -20,5 +21,13 @@ namespace iosu.Interfaces.ResponseHelpers
         IEnumerable<SelectListItem> GetProducts(OrderType parse, long? partnerId);
 
         IEnumerable<Order> GetBigestOrders();
+
+        IEnumerable<Order> GetReleasedInPeriod(String from, String to);
+
+        IEnumerable<Order> SearchOrdersByProductName(String name);
+
+        IEnumerable<Order> SearchOrdersByPartnerName(String name);
+
+        long? GetProductPrice(long? productId);
     }
 }

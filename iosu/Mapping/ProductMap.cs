@@ -16,6 +16,8 @@ namespace iosu.Mapping
             Map(product => product.UnitPrice);
 
             Map(product => product.ManufacturerId).Column("ManufacturerId");
+
+            References(product => product.Manufacturer).Column("ManufacturerId").Not.Insert().Not.Update();
         }
     }
 }

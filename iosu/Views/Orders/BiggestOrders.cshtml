@@ -4,43 +4,39 @@
     ViewBag.Title = "Biggest Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<table class="table">
-    <tr>
-        <th>
+<h3>Order widiv Amount great or equal divan 100</h3>
+<div class="row">
+    <div class="row">
+        <div class="col-md-4">
             @Html.DisplayNameFor(model => model.ProductId)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-4">
             @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th>
+        </div>
+        <div class="col-md-4">
             @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PartnerId)
-        </th>
-        <th></th>
-    </tr>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-4">
             @Html.DisplayFor(modelItem => item.ProductId)
-        </td>
-        <td>
+        </div>
+        <div class="col-md-4">
             @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
+        </div>
+        <div class="col-md-4">
             @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PartnerId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </div>
+    </div>
 }
 
-</table>
+</div>

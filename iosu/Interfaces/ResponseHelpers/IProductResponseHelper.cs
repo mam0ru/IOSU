@@ -1,4 +1,6 @@
-﻿using iosu.Entities;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using iosu.Entities;
 using iosu.Models;
 
 namespace iosu.Interfaces.ResponseHelpers
@@ -8,5 +10,8 @@ namespace iosu.Interfaces.ResponseHelpers
         ProductsCreateViewModel GetProduct(long? id);
 
         void SaveProduct(ProductsCreateModel productViewModel);
+
+        IEnumerable<Partner> GetReportInfo();
+        void Validate(ModelStateDictionary modelState, ProductsCreateModel product);
     }
 }

@@ -39,14 +39,6 @@ namespace iosu.Controllers
             return View(order);
         }
 
-        [HttpGet]
-        public ActionResult Create()
-        {
-            //            OrderCreateViewModel add and use
-            OrderRequestModel order = OrdersResponseHelper.GetOrder(0);
-            return View(order);
-        }
-
         [HttpPost]
         public String GetPartners(String type)
         {
@@ -62,36 +54,22 @@ namespace iosu.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
+        public String GetProductPrice(long? productId)
         {
-            OrdersResponseHelper.Validate(ModelState, orderResponse);
-            if (ModelState.IsValid)
-            {
-                OrdersResponseHelper.SaveOrder(orderResponse);
-                return RedirectToAction("Index");
-            }
-            OrderRequestModel orderRequest = OrdersResponseHelper.ConvertResponseObjectToRequestObject(orderResponse);
-            return View(orderRequest);
+            long? productPrice = OrdersResponseHelper.GetProductPrice(productId);
+            return JsonConvert.SerializeObject(productPrice);
         }
 
-        public ActionResult Edit(long? id)
+        [HttpGet]
+        public ActionResult Create(long? partnerId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrderRequestModel order = OrdersResponseHelper.GetOrder(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
+            OrderRequestModel order = OrdersResponseHelper.GetOrder(0, partnerId);
             return View(order);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
+        public ActionResult Create([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
         {
             OrdersResponseHelper.Validate(ModelState, orderResponse);
             if (ModelState.IsValid)
@@ -129,7 +107,28 @@ namespace iosu.Controllers
         public ActionResult BiggestOrders()
         {
             IEnumerable<Order> orders = OrdersResponseHelper.GetBigestOrders();
-            return View(orders);
+            return View("Index", orders);
+        }
+
+        [HttpPost]
+        public ActionResult ReleasedInPeriod([Bind(Include = "from, to")] String from, String to)
+        {
+            IEnumerable<Order> orders = OrdersResponseHelper.GetReleasedInPeriod(from, to);
+            return View("Index", orders);
+        }
+
+        [HttpPost]
+        public ActionResult SearchOrdersByProductName([Bind(Include = "name")] String name)
+        {
+            IEnumerable<Order> orders = OrdersResponseHelper.SearchOrdersByProductName(name);
+            return View("Index", orders);
+        }
+
+        [HttpPost]
+        public ActionResult SearchOrdersByPartnerName([Bind(Include = "partnerName")] String partnerName)
+        {
+            IEnumerable<Order> orders = OrdersResponseHelper.SearchOrdersByPartnerName(partnerName);
+            return View("Index", orders);
         }
     }
 }

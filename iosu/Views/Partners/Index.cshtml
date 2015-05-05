@@ -5,8 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row" style="margin: 10px;">
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+<div class="row">
+    <div style="margin: 10px;">
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    </div>
 </div>
 
 @if (Model.Any())

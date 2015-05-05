@@ -1,4 +1,6 @@
-﻿namespace iosu.Entities
+﻿using System;
+
+namespace iosu.Entities
 {
     public class Order
     {
@@ -7,6 +9,7 @@
         public virtual long Amount { get; set; }
         public virtual long Price { get; set; }
         public virtual long PartnerId { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
         public virtual OrderType OrderType { get; set; }
 
         public virtual Partner Partner { get; set; }

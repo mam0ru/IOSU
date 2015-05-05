@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using iosu.DAO.SearchParameters;
 using iosu.Interfaces.DAO;
 using NHibernate;
@@ -9,42 +9,26 @@ namespace iosu.DAO
 {
     public class OrdersRepository : GenericRepository<Order>, IOrdersRepository
     {
-        private readonly IProductRepository ProductRepository;
-
-        private readonly IPartnersRepository PartnersRepository;
-
-        public OrdersRepository(IProductRepository productRepository, IPartnersRepository partnersRepository)
+        public override Order SaveOrUpdate(Order entity)
         {
-            ProductRepository = productRepository;
-            PartnersRepository = partnersRepository;
-        }
-
-        public override IEnumerable<Order> GetAll()
-        {
-            IEnumerable<Order> results = base.GetAll();
-            foreach (Order order in results)
-            {
-                order.Product = ProductRepository.GetById(order.ProductId);
-                order.Partner = PartnersRepository.GetById(order.PartnerId);
-            }
-            return results;
-        }
-
-        public override Order GetById(object id)
-        {
-            var order = base.GetById(id);
-            order.Product = ProductRepository.GetById(order.ProductId);
-            order.Partner = PartnersRepository.GetById(order.PartnerId);
-            return order;
+            entity.CreatedOn = DateTime.UtcNow;
+            return base.SaveOrUpdate(entity);
         }
 
         protected override void AddRestrictions(ICriteria criteria, IBaseSearchParameters parameters)
         {
             criteria.AddOrder(NHibernate.Criterion.Order.Desc("Amount"));
             var param = parameters as OrderSearchParameters;
-            if (param != null && param.Amount.HasValue)
+            if (param != null)
             {
-                criteria.Add(Restrictions.Ge("Amount", param.Amount.Value));
+                if (param.Amount.HasValue)
+                {
+                    criteria.Add(Restrictions.Ge("Amount", param.Amount.Value));
+                }
+                if (param.From.HasValue && param.From.Value > DateTime.MinValue && param.To.HasValue && param.To.Value < DateTime.MaxValue)
+                {
+                    criteria.Add(Restrictions.Between("CreatedOn", param.From.Value, param.To.Value));
+                }
             }
         }
     }

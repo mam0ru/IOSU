@@ -50,6 +50,7 @@ namespace iosu.Controllers
             [Bind(Include = "Id,Name,PartnerType,ContactId,Contact")]
             Partner partner)
         {
+            PartnerResponseHelper.Validate(ModelState, partner);
             if (ModelState.IsValid)
             {
                 PartnerResponseHelper.SaveOrUpdate(partner);

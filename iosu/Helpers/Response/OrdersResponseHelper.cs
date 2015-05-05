@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using iosu.DAO.SearchParameters;
@@ -46,20 +48,29 @@ namespace iosu.Helpers.Response
             OrdersRepository.Delete(id);
         }
 
-        public OrderRequestModel GetOrder(long? id)
+        public OrderRequestModel GetOrder(long? id, long? partnerId = null)
         {
             if (!id.HasValue || id == 0)
             {
+                Partner partner = null;
+                if (partnerId.HasValue)
+                {
+                    partner = PartnersRepository.GetById(partnerId.Value);
+                }
+                IEnumerable<SelectListItem> partners = partner != null
+                    ? new List<SelectListItem>
+                    {
+                        PartnerToSelectListItem(partner)
+                    }
+                    : GetPartners(OrderType.Buy);
+                IEnumerable<SelectListItem> products = GetProducts(
+                    partner != null && partner.PartnerType == PartnerType.Customer
+                        ? OrderType.Sell
+                        : OrderType.Buy, long.Parse(partners.First().Value));
                 return new OrderRequestModel
                 {
-                    ProductIds =
-                        ProductRepository.GetAll()
-                            .Select(prod => new SelectListItem
-                            {
-                                Text = prod.Name,
-                                Value = prod.Id.ToString()
-                            }),
-                    PartnerIds = GetPartners(OrderType.Buy)
+                    PartnerIds = partners,
+                    ProductIds = products
                 };
             }
             Order product = GetEntityById(id);
@@ -77,36 +88,15 @@ namespace iosu.Helpers.Response
                     order.Product.Amount -= order.Amount;
                     store.Cash += order.Amount * order.Price;
                 }
-                else
+                else if (order.OrderType == OrderType.Buy)
                 {
                     order.Product.Amount += order.Amount;
                     store.Cash -= order.Amount * order.Price;
                 }
+                StoreRepository.SaveOrUpdate(store);
+                order.Product = ProductRepository.SaveOrUpdate(order.Product);
+                OrdersRepository.SaveOrUpdate(order);
             }
-            else
-            {
-                var oldOrder = OrdersRepository.GetById(order.Id);
-                if (oldOrder.Product.Id == order.Product.Id && order.OrderType == oldOrder.OrderType)
-                {
-                    if (order.OrderType == OrderType.Sell)
-                    {
-                        oldOrder.Product.Amount += oldOrder.Amount - order.Amount;
-                    }
-                    else
-                    {
-                        oldOrder.Product.Amount -= oldOrder.Amount - order.Amount;
-                    }
-                }
-                oldOrder.OrderType = order.OrderType;
-                oldOrder.Partner = order.Partner;
-                oldOrder.Price = order.Price;
-                oldOrder.Product = ProductRepository.SaveOrUpdate(oldOrder.Product);
-                OrdersRepository.SaveOrUpdate(oldOrder);
-                return;
-            }
-            StoreRepository.SaveOrUpdate(store);
-            order.Product = ProductRepository.SaveOrUpdate(order.Product);
-            OrdersRepository.SaveOrUpdate(order);
         }
 
         public void Validate(ModelStateDictionary modelState, OrderResponseModel orderResponse)
@@ -131,6 +121,14 @@ namespace iosu.Helpers.Response
             if (orderResponse.Price <= 0)
             {
                 modelState.AddModelError("Price", "Incorrect price. Price must be great than 0");
+            }
+            else if (orderResponse.Price < product.UnitPrice)
+            {
+                modelState.AddModelError("Price", String.Format("Realy!? Specified price is less than Unit Pice for this Product. Unit Pice = {0}", product.UnitPrice));
+            }
+            if (orderResponse.Amount <= 0)
+            {
+                modelState.AddModelError("Amount", "Hmm... Amount must be great than 0.");
             }
         }
 
@@ -158,11 +156,25 @@ namespace iosu.Helpers.Response
             PartnerType partnerType = type == OrderType.Buy ? PartnerType.Manufacturer : PartnerType.Customer;
             return PartnersRepository.GetAll()
                 .Where(partner => partner.PartnerType == partnerType)
-                .Select(partner => new SelectListItem
-                {
-                    Text = partner.Name,
-                    Value = partner.Id.ToString()
-                });
+                .Select(PartnerToSelectListItem);
+        }
+
+        private SelectListItem PartnerToSelectListItem(Partner partner)
+        {
+            return new SelectListItem
+            {
+                Text = partner.Name,
+                Value = partner.Id.ToString()
+            };
+        }
+
+        private SelectListItem ProductToSelectListItem(Product product)
+        {
+            return new SelectListItem
+            {
+                Text = product.Name,
+                Value = product.Id.ToString()
+            };
         }
 
         public IEnumerable<SelectListItem> GetProducts(OrderType orderType, long? partnerId)
@@ -171,18 +183,10 @@ namespace iosu.Helpers.Response
             {
                 return ProductRepository.GetAll()
                     .Where(product => product.ManufacturerId == partnerId)
-                    .Select(product => new SelectListItem
-                    {
-                        Text = product.Name,
-                        Value = product.Id.ToString()
-                    });
+                    .Select(ProductToSelectListItem);
             }
             return ProductRepository.GetAll()
-                .Select(product => new SelectListItem
-                {
-                    Text = product.Name,
-                    Value = product.Id.ToString()
-                });
+                .Select(ProductToSelectListItem);
         }
 
         public IEnumerable<Order> GetBigestOrders()
@@ -193,6 +197,43 @@ namespace iosu.Helpers.Response
             };
             IEnumerable<Order> result = OrdersRepository.GetBySearchParameters(parameters);
             return result;
-        } 
+        }
+
+        public IEnumerable<Order> GetReleasedInPeriod(String from, String to)
+        {
+            DateTime fromDate;
+            DateTime.TryParse(from, null, DateTimeStyles.AdjustToUniversal, out fromDate);
+            DateTime toDate;
+            DateTime.TryParse(to, null, DateTimeStyles.AdjustToUniversal, out toDate);
+            var orderSearchParameters = new OrderSearchParameters
+            {
+                From = fromDate,
+                To = toDate
+            };
+            IEnumerable<Order> orders = OrdersRepository.GetBySearchParameters(orderSearchParameters);
+            return orders;
+        }
+
+        public IEnumerable<Order> SearchOrdersByProductName(string name)
+        {
+            var orders = OrdersRepository.GetAll().Where(order => order.Product.Name.Contains(name));
+            return orders;
+        }
+
+        public IEnumerable<Order> SearchOrdersByPartnerName(string name)
+        {
+            var orders = OrdersRepository.GetAll().Where(order => order.Partner.Name.Contains(name));
+            return orders;
+        }
+
+        public long? GetProductPrice(long? productId)
+        {
+            if (productId.HasValue)
+            {
+                Product product = ProductRepository.GetById(productId.Value);
+                return product.UnitPrice;
+            }
+            return null;
+        }
     }
 }

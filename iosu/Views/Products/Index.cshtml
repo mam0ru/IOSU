@@ -4,8 +4,13 @@
     ViewBag.Title = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div style='margin: 10px;'>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+<div class="row">
+    <div style='margin: 10px;'>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    </div>
+    <div style="margin: 10px;">
+        @Html.ActionLink("Report", "Report", null, new { @class = "btn btn-default" })
+    </div>
 </div>
 <div class="row jumbotron">
     @if (Model.Any())
