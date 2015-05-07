@@ -1,0 +1,36 @@
+﻿@model iosu.Models.View.OrderPrintModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <script src="../../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+        
+        <meta name="viewport" content="width=device-width" />
+        <title>Store "IOSU".</title>
+        <script>
+            $(document).ready(function() {
+                $('#print').click(function() {
+                    $('#print').hide();
+                    window.print();
+                    setTimeout(function() {
+                        $('#print').show();
+                    },500);
+                });
+            });
+        </script>
+    </head>
+<body>
+    <div style=" text-align: center;">    <h4 class="text-center"></h4>
+        <h5>@String.Format("{0} {1}", Model.Order.Partner.Name, Model.Order.OrderType)</h5>
+        <h5>@String.Format("{0}  x{1}................................{2}", Model.Order.Product.Name, Model.Order.Amount, Model.Order.Price)</h5>
+        <h5>@String.Format("Payment amount {0}", Model.Order.Amount*Model.Order.Price)</h5>
+        <h5>@String.Format("Order processed {0}", Model.Order.CreatedOn)</h5>
+    
+        <input type="button" value="Print" title="Print" id="print" class="btn btn-default" /></div>
+</body>
+</html>

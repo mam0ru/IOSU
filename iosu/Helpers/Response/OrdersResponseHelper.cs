@@ -9,6 +9,7 @@ using iosu.Enums;
 using iosu.Interfaces.DAO;
 using iosu.Interfaces.ResponseHelpers;
 using iosu.Models;
+using iosu.Models.View;
 
 namespace iosu.Helpers.Response
 {
@@ -234,6 +235,14 @@ namespace iosu.Helpers.Response
                 return product.UnitPrice;
             }
             return null;
+        }
+
+        public OrderPrintModel GetOrderPrintModel(long id)
+        {
+            return new OrderPrintModel
+            {
+                Order = OrdersRepository.GetById(id)
+            };
         }
     }
 }

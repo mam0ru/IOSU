@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Models;
+using iosu.Models.View;
 
 namespace iosu.Interfaces.ResponseHelpers
 {
@@ -29,5 +30,7 @@ namespace iosu.Interfaces.ResponseHelpers
         IEnumerable<Order> SearchOrdersByPartnerName(String name);
 
         long? GetProductPrice(long? productId);
+
+        OrderPrintModel GetOrderPrintModel(long id);
     }
 }

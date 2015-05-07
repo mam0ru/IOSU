@@ -1,0 +1,52 @@
+﻿@using iosu.Entities
+@model IEnumerable<iosu.Entities.Partner>
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="row">
+            <div class="col-md-3">
+                <label>@Html.DisplayNameFor(model => model.Name)</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Html.DisplayNameFor(model => model.Name)</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Html.DisplayNameFor(model => model.Products.First().UnitPrice)</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Html.DisplayNameFor(model => model.Products.First().Amount)</label>
+            </div>
+        </div>
+        @foreach (var partner in Model)
+        {
+            <div class="row">
+                <div class="col-md-3"><label>@partner.Name</label></div>
+            </div>
+            if (partner.Products.Any())
+            {
+                foreach (Product product in partner.Products)
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            @product.Name
+                        </div>
+                        <div class="col-md-3">
+                            @product.UnitPrice.ToString()
+                        </div>
+                        <div class="col-md-3">
+                            @product.Amount.ToString()
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+}

@@ -25,9 +25,14 @@ namespace iosu.DAO
                 {
                     criteria.Add(Restrictions.Ge("Amount", param.Amount.Value));
                 }
-                if (param.From.HasValue && param.From.Value > DateTime.MinValue && param.To.HasValue && param.To.Value < DateTime.MaxValue)
+                if (param.From.HasValue && param.From.Value > DateTime.MinValue && param.To.HasValue &&
+                    param.To.Value < DateTime.MaxValue)
                 {
                     criteria.Add(Restrictions.Between("CreatedOn", param.From.Value, param.To.Value));
+                }
+                if (param.PartnerId.HasValue)
+                {
+                    criteria.Add(Restrictions.Eq("PartnerId", param.PartnerId.Value));
                 }
             }
         }

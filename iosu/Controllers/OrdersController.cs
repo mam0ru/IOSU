@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using iosu.Entities;
 using iosu.Interfaces.ResponseHelpers;
 using iosu.Models;
+using iosu.Models.View;
 using Newtonsoft.Json;
 
 namespace iosu.Controllers
@@ -129,6 +130,13 @@ namespace iosu.Controllers
         {
             IEnumerable<Order> orders = OrdersResponseHelper.SearchOrdersByPartnerName(partnerName);
             return View("Index", orders);
+        }
+
+        [HttpGet]
+        public ActionResult Print(long id)
+        {
+            OrderPrintModel orders = OrdersResponseHelper.GetOrderPrintModel(id);
+            return View(orders);
         }
     }
 }

@@ -10,5 +10,7 @@ namespace iosu.DAO.SearchParameters
         public DateTime? From { get; set; }
 
         public DateTime? To { get; set; }
+
+        public long? PartnerId { get; set; }
     }
 }
