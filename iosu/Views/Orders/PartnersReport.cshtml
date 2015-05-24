@@ -1,0 +1,67 @@
+﻿@using iosu.Entities
+@model IEnumerable<Partner>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Report</title>
+</head>
+<body>
+    <div class="row jumbotron">
+        <div class="row thumbnail">
+            <div class="col-md-3">
+                @Html.Name("Partner name")
+            </div>
+            <div class="col-md-3">
+                @Html.Name("Product name")
+            </div>
+            <div class="col-md-3">
+                @Html.Name("Date")
+            </div>
+            <div class="col-md-3">
+                @Html.Name("Amount")
+            </div>
+        </div>
+        @foreach (Partner partner in Model)
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    @partner.Name
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+            if (!partner.Orders.Any())
+            {
+                <div class="row text-center thumbnail">
+                    <label class="text-center">No Data</label>
+                </div>
+            }
+            foreach (Order order in partner.Orders)
+            {
+                <div class="row"><div class="col-md-3">
+                         </div>
+                    <div class="col-md-3">
+                        @order.Product.Name
+                    </div>
+                    <div class="col-md-3">
+                        @order.CreatedOn.ToShortDateString()
+                    </div>
+                    <div class="col-md-3">
+                        @order.Amount.ToString()
+                    </div></div>
+            }
+        }
+    </div>
+</body>
+</html>

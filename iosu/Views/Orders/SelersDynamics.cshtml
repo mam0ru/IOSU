@@ -1,0 +1,194 @@
+﻿@using iosu.Entities
+@model IEnumerable<iosu.Models.View.SelerDynamic>
+
+@{
+    ViewBag.Title = "Selers Dynamics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row jumbotron">
+    <div class="row thumbnail">
+        <div class="col-md-3">
+            @Html.Name("Seller name")
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-1">
+                    @Html.Name(Months.Jan.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Feb.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Mar.ToString())
+                </div>
+
+                <div class="col-md-1">
+                    @Html.Name(Months.Apr.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.May.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Jun.ToString())
+                </div>
+
+                <div class="col-md-1">
+                    @Html.Name(Months.Jul.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Aug.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Sep.ToString())
+                </div>
+
+                <div class="col-md-1">
+                    @Html.Name(Months.Oct.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Nov.ToString())
+                </div>
+                <div class="col-md-1">
+                    @Html.Name(Months.Dec.ToString())
+                </div>
+            </div>
+        </div>
+    </div>
+    <div >
+        @foreach (var selers in Model)
+              {
+                  <div class="row">
+                      <div class="col-md-3">
+                          @selers.Selers
+                      </div>
+                      <div class="col-md-9">
+                          <div class="row">
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Jan))
+                                  {
+                                      <p>@selers.Months[Months.Jan]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Feb))
+                                  {
+                                      <p>@selers.Months[Months.Feb]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Mar))
+                                  {
+                                      <p>@selers.Months[Months.Mar]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Apr))
+                                  {
+                                      <p>@selers.Months[Months.Apr]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.May))
+                                  {
+                                      <p>@selers.Months[Months.May]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Jun))
+                                  {
+                                      <p>@selers.Months[Months.Jun]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Jul))
+                                  {
+                                      <p>@selers.Months[Months.Jul]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Aug))
+                                  {
+                                      <p>@selers.Months[Months.Aug]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Sep))
+                                  {
+                                      <p>@selers.Months[Months.Sep]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Oct))
+                                  {
+                                      <p>@selers.Months[Months.Oct]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Nov))
+                                  {
+                                      <p>@selers.Months[Months.Nov]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                              <div class="col-md-1">
+                                  @if (selers.Months.ContainsKey(Months.Dec))
+                                  {
+                                      <p>@selers.Months[Months.Dec]</p>
+                                  }
+                                  else
+                                  {
+                                      <p>0</p>
+                                  }
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              }
+    </div>
+</div>
