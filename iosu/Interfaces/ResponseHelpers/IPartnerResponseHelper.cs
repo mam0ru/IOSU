@@ -8,5 +8,7 @@ namespace iosu.Interfaces.ResponseHelpers
     {
         PartnerDetailsViewModel GetPartnerDetailsViewModel(long? id);
         void Validate(ModelStateDictionary modelState, Partner partner);
+        void IncreasProductsPrice(long value, long id);
+        void ReducProductsPrice(long value, long id);
     }
 }

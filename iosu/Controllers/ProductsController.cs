@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using iosu.Entities;
@@ -100,7 +101,16 @@ namespace iosu.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            ProductResponseHelper.Delete(id);
+            try
+            {
+                ProductResponseHelper.Delete(id);
+            }
+            catch (Exception e)
+            {
+                Product product = ProductResponseHelper.GetEntityById(id);
+                product.CantDelete = true;
+                return View(product);
+            }
             return RedirectToAction("Index");
         }
 
@@ -109,6 +119,13 @@ namespace iosu.Controllers
         {
             IEnumerable<Partner> reportInfo = ProductResponseHelper.GetReportInfo();
             return View(reportInfo);
+        }
+
+        [HttpPost]
+        public ActionResult Hn9([Bind(Include = "hn9")] String hn9)
+        {
+            ProductResponseHelper.AddColumn(hn9);
+            return RedirectToAction("Index");
         }
     }
 }

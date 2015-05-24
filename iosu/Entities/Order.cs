@@ -14,6 +14,7 @@ namespace iosu.Entities
 
         public virtual Partner Partner { get; set; }
         public virtual Product Product { get; set; }
+        public virtual bool CantDelete { get; set; }
     }
 
     public enum OrderType

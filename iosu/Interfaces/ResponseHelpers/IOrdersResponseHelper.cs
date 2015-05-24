@@ -7,16 +7,16 @@ using iosu.Models.View;
 
 namespace iosu.Interfaces.ResponseHelpers
 {
-    public interface IOrdersResponseHelper:IBaseResponseHelper<Order>
+    public interface IOrdersResponseHelper : IBaseResponseHelper<Order>
     {
         OrderRequestModel GetOrder(long? id, long? partnerId = null);
 
         void SaveOrder(OrderResponseModel productViewModel);
 
         void Validate(ModelStateDictionary modelState, OrderResponseModel orderResponse);
-        
+
         OrderRequestModel ConvertResponseObjectToRequestObject(OrderResponseModel orderResponse);
-        
+
         IEnumerable<SelectListItem> GetPartners(OrderType type);
 
         IEnumerable<SelectListItem> GetProducts(OrderType parse, long? partnerId);
@@ -32,5 +32,9 @@ namespace iosu.Interfaces.ResponseHelpers
         long? GetProductPrice(long? productId);
 
         OrderPrintModel GetOrderPrintModel(long id);
+
+        IEnumerable<Partner> GetAllPartners();
+
+        IEnumerable<SelerDynamic> GetSelersDynamics();
     }
 }

@@ -100,7 +100,16 @@ namespace iosu.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            OrdersResponseHelper.Delete(id);
+            try
+            {
+                OrdersResponseHelper.Delete(id);
+            }
+            catch (Exception e)
+            {
+                Order order = OrdersResponseHelper.GetEntityById(id);
+                order.CantDelete = true;
+                return View(order);
+            }
             return RedirectToAction("Index");
         }
 
@@ -137,6 +146,20 @@ namespace iosu.Controllers
         {
             OrderPrintModel orders = OrdersResponseHelper.GetOrderPrintModel(id);
             return View(orders);
+        }
+
+        [HttpGet]
+        public ActionResult PartnersReport()
+        {
+            IEnumerable<Partner> partners = OrdersResponseHelper.GetAllPartners();
+            return View(partners);
+        }
+
+        [HttpGet]
+        public ActionResult SelersDynamics()
+        {
+            IEnumerable<SelerDynamic> dynamic = OrdersResponseHelper.GetSelersDynamics();
+            return View(dynamic);
         }
     }
 }

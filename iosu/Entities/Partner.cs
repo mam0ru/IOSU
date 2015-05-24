@@ -22,5 +22,9 @@ namespace iosu.Entities
         public virtual Contact Contact { get; set; }
 
         public virtual IEnumerable<Product> Products { get; set; }
+
+        public virtual IEnumerable<Order> Orders { get; set; }
+
+        public virtual bool CantDelete { get; set; }
     }
 }

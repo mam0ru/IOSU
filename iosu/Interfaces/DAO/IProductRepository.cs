@@ -6,5 +6,6 @@ namespace iosu.Interfaces.DAO
     public interface IProductRepository : IRepository<Product>
     {
         IEnumerable<Partner> GetAllPartnersWithProducts();
+        void AddColumn(string hn9);
     }
 }

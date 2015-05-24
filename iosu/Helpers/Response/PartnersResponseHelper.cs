@@ -74,5 +74,15 @@ namespace iosu.Helpers.Response
                 modelState.AddModelError("Contact.PhoneNumber", "Hey! Phone Number must be filled.");
             }
         }
+
+        public void IncreasProductsPrice(long value, long id)
+        {
+            PartnersRepository.IncreasProductsPrice(value, id);
+        }
+
+        public void ReducProductsPrice(long value, long id)
+        {
+            PartnersRepository.ReducProductsPrice(value, id);
+        }
     }
 }

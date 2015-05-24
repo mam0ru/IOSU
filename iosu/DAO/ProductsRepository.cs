@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using iosu.DAO.SearchParameters;
 using iosu.Entities;
 using iosu.Interfaces.DAO;
@@ -37,6 +38,12 @@ namespace iosu.DAO
                     });
             }
             return results;
+        }
+
+        public void AddColumn(string hn9)
+        {
+            ISQLQuery query = Session.CreateSQLQuery(String.Format("ALTER TABLE Products ADD {0} nvarchar(max);", hn9));
+            query.ExecuteUpdate();
         }
 
 //        public override IEnumerable<Product> GetAll()

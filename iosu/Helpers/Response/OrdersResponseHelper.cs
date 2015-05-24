@@ -10,6 +10,7 @@ using iosu.Interfaces.DAO;
 using iosu.Interfaces.ResponseHelpers;
 using iosu.Models;
 using iosu.Models.View;
+using WebGrease.Css.Extensions;
 
 namespace iosu.Helpers.Response
 {
@@ -244,5 +245,66 @@ namespace iosu.Helpers.Response
                 Order = OrdersRepository.GetById(id)
             };
         }
+
+        public IEnumerable<Partner> GetAllPartners()
+        {
+            IEnumerable<Partner> partners = PartnersRepository.GetAll();
+            foreach (var partner in partners)
+            {
+                partner.Orders = OrdersRepository.GetBySearchParameters(new OrderSearchParameters
+                {
+                    PartnerId = partner.Id
+                });
+            }
+            return partners;
+        }
+
+        public IEnumerable<SelerDynamic> GetSelersDynamics()
+        {
+            IList<SelerDynamic> selerDynamics = new List<SelerDynamic>();
+//            FillMonths(selerDynamics);
+            int currentYear = DateTime.Now.Year;
+            IEnumerable<Order> orders = OrdersRepository.GetAll()
+                .Where(order => order.CreatedOn.Year == currentYear)
+                .Select(order => order);
+            FillStatistic(orders, selerDynamics);
+            return selerDynamics;
+        }
+
+        private void FillStatistic(IEnumerable<Order> orders, IList<SelerDynamic> selerDynamics)
+        {
+            orders.GroupBy(order => order.Partner).ForEach(grouping => selerDynamics.Add(new SelerDynamic
+            {
+                Selers = grouping.Key.Name,
+                Months = GetInfo(grouping)
+            }));
+//            foreach (SelerDynamic selerDynamic in selerDynamics)
+//            {
+//                orders.Where(order => order.CreatedOn.Month == selerDynamic.Month.Month)
+//                    .GroupBy(order => order.Partner)
+//                    .ForEach(grouping => selerDynamic.Selers.Add(grouping.Key.Name, grouping.Sum(order => order.Amount)));
+//            }
+        }
+
+        private Dictionary<Months, long> GetInfo(IGrouping<Partner, Order> grouping)
+        {
+            var dict = new Dictionary<Months, long>();
+            var ordersGroup = grouping
+                .GroupBy(order => order.CreatedOn.Month);
+            ordersGroup.ForEach(orders => dict.Add((Months)orders.Key, orders.Sum(order => order.Amount)));
+            return dict;
+        }
+
+//        private void FillMonths(IList<SelerDynamic> selerDynamics)
+//        {
+//            for (int i = 1; i < 13; i++)
+//            {
+//                selerDynamics.Add(new SelerDynamic
+//                {
+//                    Month = new DateTime(1, i, 1),
+//                    Selers = new Dictionary<string, long>()
+//                });
+//            }
+//        }
     }
 }

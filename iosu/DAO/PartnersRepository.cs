@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Globalization;
 using iosu.Entities;
 using iosu.Interfaces.DAO;
+using NHibernate;
 
 namespace iosu.DAO
 {
@@ -35,6 +37,18 @@ namespace iosu.DAO
             entity.Contact = ContactsRepository.SaveOrUpdate(entity.Contact);
             entity.ContactId = entity.Contact.Id;
             return base.SaveOrUpdate(entity);
+        }
+
+        public void IncreasProductsPrice(long value, long id)
+        {
+            ISQLQuery query = Session.CreateSQLQuery(String.Format("UPDATE Products SET [UnitPrice] = [UnitPrice] + [UnitPrice]*{0} WHERE [ManufacturerId] = {1};", ((double)value / 100).ToString(CultureInfo.GetCultureInfo("en-GB")), id));
+            query.ExecuteUpdate();
+        }
+
+        public void ReducProductsPrice(long value, long id)
+        {
+            ISQLQuery query = Session.CreateSQLQuery(String.Format("UPDATE Products SET [UnitPrice] = [UnitPrice] - [UnitPrice]*{0} WHERE [ManufacturerId] = {1};", ((double)value / 100).ToString(CultureInfo.GetCultureInfo("en-GB")), id));
+            query.ExecuteUpdate();
         }
     }
 }

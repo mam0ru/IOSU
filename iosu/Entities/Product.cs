@@ -23,5 +23,7 @@ namespace iosu.Entities
 
         [DisplayName("Manufacturer")]
         public virtual Partner Manufacturer { get; set; }
+
+        public virtual bool CantDelete { get; set; }
     }
 }

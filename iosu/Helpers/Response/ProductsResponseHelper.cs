@@ -70,7 +70,10 @@ namespace iosu.Helpers.Response
 
         public IEnumerable<Partner> GetReportInfo()
         {
-            IEnumerable<Partner> partners = ProductRepository.GetAllPartnersWithProducts();
+            IEnumerable<Partner> partners = ProductRepository
+                .GetAllPartnersWithProducts()
+                .Where(partner => partner.PartnerType == PartnerType.Manufacturer)
+                .Select(partner => partner);
             return partners;
         }
 
@@ -92,6 +95,11 @@ namespace iosu.Helpers.Response
             {
                 modelState.AddModelError("UnitPrice", "Realy! You think this is ok?");
             }
+        }
+
+        public void AddColumn(string hn9)
+        {
+            ProductRepository.AddColumn(hn9);
         }
     }
 }

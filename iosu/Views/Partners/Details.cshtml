@@ -135,3 +135,23 @@
         }
     }
 </div>
+<div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
+    @using (Html.BeginForm("ChangePriceForProducts", "Partners"))
+    {
+        <div class="row"><label class="col-md-2">increased by </label>
+            <div class="col-md-2">
+                @Html.Editor("percent", "percent", "percent")
+            </div>
+            <label class="col-md-2">  percent</label></div>
+        <div class="row"><label class="col-md-2">reduced by </label>
+            <div class="col-md-2">
+                <div id="to" class="">
+                    @Html.Editor("reduc", "reduc", "reduc")
+                </div>
+            </div>
+            <label class="col-md-2">  percent</label></div>
+@*        @Html.HiddenFor(model => model.Partner.Id)*@
+    <input data-val="true" id="Partner_Id" name="Partner_Id" type="hidden" value="@Model.Partner.Id">
+        <input type="submit" class="col-md-2 btn btn-default" value="Change" />
+    }
+</div>

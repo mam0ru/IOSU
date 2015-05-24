@@ -12,6 +12,19 @@
         @Html.ActionLink("Report", "Report", null, new { @class = "btn btn-default" })
     </div>
 </div>
+
+<div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
+    @using (Html.BeginForm("Hn9", "Products"))
+    {
+        <label class="col-md-3">Column name: </label>
+        <div class="col-md-2">
+            @Html.Editor("hn9", "hn9", "hn9")
+        </div>
+        <input type="submit" class="col-md-2 btn btn-default" value="Add column" />
+    }
+</div>
+
+
 <div class="row jumbotron">
     @if (Model.Any())
     {

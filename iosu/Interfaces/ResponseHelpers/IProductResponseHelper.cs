@@ -13,5 +13,6 @@ namespace iosu.Interfaces.ResponseHelpers
 
         IEnumerable<Partner> GetReportInfo();
         void Validate(ModelStateDictionary modelState, ProductsCreateModel product);
+        void AddColumn(string hn9);
     }
 }

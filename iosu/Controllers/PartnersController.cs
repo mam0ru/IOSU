@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -95,7 +96,31 @@ namespace iosu.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            PartnerResponseHelper.Delete(id);
+            try
+            {
+                PartnerResponseHelper.Delete(id);
+            }
+            catch (Exception)
+            {
+                Partner partnerCreateViewModel = PartnerResponseHelper.GetEntityById(id);
+                partnerCreateViewModel.CantDelete = true;
+                return View(partnerCreateViewModel);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult ChangePriceForProducts([Bind(Include = "percent,reduc,Partner_Id")] long? percent, long? reduc, long? Partner_Id)
+        {
+            if (percent.HasValue && Partner_Id.HasValue)
+            {
+                PartnerResponseHelper.IncreasProductsPrice(percent.Value, Partner_Id.Value);
+            }
+            else if (reduc.HasValue && Partner_Id.HasValue)
+            {
+                PartnerResponseHelper.ReducProductsPrice(reduc.Value, Partner_Id.Value);
+            }
+
             return RedirectToAction("Index");
         }
     }
