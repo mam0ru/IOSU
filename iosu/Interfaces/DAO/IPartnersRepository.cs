@@ -6,5 +6,6 @@ namespace iosu.Interfaces.DAO
     {
         void IncreasProductsPrice(long value, long id);
         void ReducProductsPrice(long value, long id);
+        void Evict(Partner partner);
     }
 }

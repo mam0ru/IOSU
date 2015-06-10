@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-    <div style='margin: 10px;'>
+    <div style='margin: 10px;' class="col-md-2">
         @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
     </div>
-    <div style="margin: 10px;">
+    <div style="margin: 10px;" class="col-md-2">
         @Html.ActionLink("Report", "Report", null, new { @class = "btn btn-default" })
     </div>
 </div>
@@ -20,7 +20,7 @@
         <div class="col-md-2">
             @Html.Editor("hn9", "hn9", "hn9")
         </div>
-        <input type="submit" class="col-md-2 btn btn-default" value="Add column" />
+        <input type="submit" class="col-md-2 btn btn-default" value="Add column" style="margin-left: 20px;"/>
     }
 </div>
 

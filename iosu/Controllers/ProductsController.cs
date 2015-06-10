@@ -105,7 +105,7 @@ namespace iosu.Controllers
             {
                 ProductResponseHelper.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Product product = ProductResponseHelper.GetEntityById(id);
                 product.CantDelete = true;

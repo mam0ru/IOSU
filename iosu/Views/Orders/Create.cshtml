@@ -75,11 +75,20 @@
         return false;
     }
 
+    function addAndSelectEmptyMenuItem(id) {
+        $(id).append('<option value="' + 0 + '" selected=' + '"true"' + '"> </option>');
+    }
+
     $(document).ready(function () {
         $("#OrderType").change(onOrderTypeChanged);
         $("#PartnerIds").change(onPartnerChange);
         $("#ProductIds").change(onProductChange);
-        onProductChange();
+        //        onProductChange();
+        addAndSelectEmptyMenuItem("#PartnerIds");
+        addAndSelectEmptyMenuItem("#ProductIds");
+        addAndSelectEmptyMenuItem("#OrderType");
+        $('#Price').val('');
+        $('#Amount').val('');
     });
 
 </script>

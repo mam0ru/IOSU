@@ -68,6 +68,33 @@ namespace iosu.Controllers
             return View(order);
         }
 
+        [HttpGet]
+        public ActionResult SendToArchive(long? partnerId)
+        {
+            if (partnerId.HasValue)
+            {
+                OrdersResponseHelper.SendToArchive(partnerId.Value);
+            }
+            return RedirectToAction("Details", "Partners", new { id = partnerId});
+        }
+
+        [HttpGet]
+        public ActionResult RestoreFromArchive(long? partnerId)
+        {
+            if (partnerId.HasValue)
+            {
+                OrdersResponseHelper.RestoreFromArchive(partnerId.Value);
+            }
+            return RedirectToAction("Details", "Partners", new { id = partnerId});
+        }
+
+        [HttpGet]
+        public ActionResult ViewArchive(String archiveTableName)
+        {
+            IEnumerable<Order> orders = OrdersResponseHelper.GetArhivedOrders(archiveTableName);
+            return View(orders);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ProductIds,Amount,Price,PartnerIds,OrderType")] OrderResponseModel orderResponse)
@@ -104,7 +131,7 @@ namespace iosu.Controllers
             {
                 OrdersResponseHelper.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Order order = OrdersResponseHelper.GetEntityById(id);
                 order.CantDelete = true;

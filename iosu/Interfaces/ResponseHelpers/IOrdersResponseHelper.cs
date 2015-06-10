@@ -36,5 +36,11 @@ namespace iosu.Interfaces.ResponseHelpers
         IEnumerable<Partner> GetAllPartners();
 
         IEnumerable<SelerDynamic> GetSelersDynamics();
+
+        void SendToArchive(long value);
+
+        void RestoreFromArchive(long partnerId);
+
+        IEnumerable<Order> GetArhivedOrders(string archiveTableName);
     }
 }

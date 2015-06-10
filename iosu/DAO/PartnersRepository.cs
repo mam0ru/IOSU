@@ -35,7 +35,10 @@ namespace iosu.DAO
         public override Partner SaveOrUpdate(Partner entity)
         {
             entity.Contact = ContactsRepository.SaveOrUpdate(entity.Contact);
-            entity.ContactId = entity.Contact.Id;
+            if (entity.ContactId == 0)
+            {
+                entity.ContactId = entity.Contact.Id;   
+            }
             return base.SaveOrUpdate(entity);
         }
 
@@ -49,6 +52,12 @@ namespace iosu.DAO
         {
             ISQLQuery query = Session.CreateSQLQuery(String.Format("UPDATE Products SET [UnitPrice] = [UnitPrice] - [UnitPrice]*{0} WHERE [ManufacturerId] = {1};", ((double)value / 100).ToString(CultureInfo.GetCultureInfo("en-GB")), id));
             query.ExecuteUpdate();
+        }
+
+        public void Evict(Partner partner)
+        {
+            ContactsRepository.Evict(partner.Contact);
+            Session.Evict(partner);
         }
     }
 }

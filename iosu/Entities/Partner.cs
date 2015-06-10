@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using iosu.Enums;
@@ -26,5 +27,7 @@ namespace iosu.Entities
         public virtual IEnumerable<Order> Orders { get; set; }
 
         public virtual bool CantDelete { get; set; }
+
+        public virtual String ArchiveTableName { get; set; }
     }
 }

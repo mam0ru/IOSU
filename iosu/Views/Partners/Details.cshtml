@@ -97,8 +97,14 @@
 <div class="row thumbnail">
     @Html.ActionLink("Create Order", "Create", "Orders", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })
     @{
+        if (!Model.Partner.ArchiveTableName.IsEmpty())
+        {
+            @Html.ActionLink("Restore Orders from archive", "RestoreFromArchive", "Orders", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })
+            @Html.ActionLink("View archive", "ViewArchive", "Orders", new { archiveTableName = Model.Partner.ArchiveTableName }, new { @class = "btn btn-default" })
+        }
         if (Model.Orders.Any())
         {
+            @Html.ActionLink("Send to archive all orders", "SendToArchive", "Orders", new { partnerId = Model.Partner.Id }, new { @class = "btn btn-default" })
             <h3>Orders:</h3>
 
             <div class="row">
@@ -138,19 +144,24 @@
 <div class="row thumbnail text-center" style="margin-left: 0px; margin-bottom: 5px;">
     @using (Html.BeginForm("ChangePriceForProducts", "Partners"))
     {
-        <div class="row"><label class="col-md-2">increased by </label>
+        <div class="row">
+            <label class="col-md-2"> Change Price:</label>
+            <label class="col-md-2">increased by </label>
             <div class="col-md-2">
                 @Html.Editor("percent", "percent", "percent")
             </div>
-            <label class="col-md-2">  percent</label></div>
-        <div class="row"><label class="col-md-2">reduced by </label>
+            <label class="col-md-2">  percent</label>
+        </div>
+        <div class="row">
+            <label class="col-md-2"></label>
+            <label class="col-md-2">reduced by </label>
             <div class="col-md-2">
                 <div id="to" class="">
                     @Html.Editor("reduc", "reduc", "reduc")
                 </div>
             </div>
-            <label class="col-md-2">  percent</label></div>
-@*        @Html.HiddenFor(model => model.Partner.Id)*@
+            <label class="col-md-2">  percent</label>
+        </div>
     <input data-val="true" id="Partner_Id" name="Partner_Id" type="hidden" value="@Model.Partner.Id">
         <input type="submit" class="col-md-2 btn btn-default" value="Change" />
     }

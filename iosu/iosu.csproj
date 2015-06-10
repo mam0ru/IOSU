@@ -331,6 +331,7 @@
     <Content Include="Views\Orders\Print.cshtml" />
     <Content Include="Views\Orders\PartnersReport.cshtml" />
     <Content Include="Views\Orders\SelersDynamics.cshtml" />
+    <Content Include="Views\Orders\ViewArchive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

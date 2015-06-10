@@ -12,10 +12,11 @@ namespace iosu.Mapping
             Id(partner => partner.Id);
             Map(partner => partner.Name).Unique();
             Map(partner => partner.PartnerType);
+            Map(partner => partner.ArchiveTableName);
 
             Map(partner => partner.ContactId).Column("ContactId");
 
-            References(partner => partner.Contact).Column("ContactId").LazyLoad().Not.Insert().Not.Update();
+            References(partner => partner.Contact).Column("ContactId").Not.LazyLoad().Not.Insert().Not.Update();
         }  
     }
 }

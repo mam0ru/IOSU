@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using iosu.DAO.SearchParameters;
 using iosu.Entities;
 using iosu.Enums;
@@ -103,12 +104,38 @@ namespace iosu.Helpers.Response
 
         public void Validate(ModelStateDictionary modelState, OrderResponseModel orderResponse)
         {
-            var partner = PartnersRepository.GetById(long.Parse(orderResponse.PartnerIds));
+            long partnerId = long.Parse(orderResponse.PartnerIds);
+            var partner = PartnersRepository.GetById(partnerId);
             Store store = StoreRepository.GetCash();
             if (store.Cash < orderResponse.Price * orderResponse.Amount && orderResponse.OrderType == OrderType.Buy)
             {
                 modelState.AddModelError("Price", "LOL. Not enought money");
                 modelState.AddModelError("Amount", "LOL. Not enought money");
+            }
+            bool needEnd = false;
+            if (partnerId == 0)
+            {
+                modelState.AddModelError("PartnerIds", "Please select Partner");
+                needEnd = true;
+            }
+            if (long.Parse(orderResponse.ProductIds) == 0)
+            {
+                modelState.AddModelError("ProductIds", "Please select Product");
+                needEnd = true;
+            }
+            if (orderResponse.Price <= 0)
+            {
+                modelState.AddModelError("Price", "Incorrect Price");
+                needEnd = true;
+            }
+            if (orderResponse.Amount <= 0)
+            {
+                modelState.AddModelError("Amount", "Incorrect Amount");
+                needEnd = true;
+            }
+            if (needEnd)
+            {
+                return;
             }
             if ((orderResponse.OrderType == OrderType.Buy && partner.PartnerType == PartnerType.Customer) || (orderResponse.OrderType == OrderType.Sell && partner.PartnerType == PartnerType.Manufacturer))
             {
@@ -262,13 +289,54 @@ namespace iosu.Helpers.Response
         public IEnumerable<SelerDynamic> GetSelersDynamics()
         {
             IList<SelerDynamic> selerDynamics = new List<SelerDynamic>();
-//            FillMonths(selerDynamics);
             int currentYear = DateTime.Now.Year;
             IEnumerable<Order> orders = OrdersRepository.GetAll()
                 .Where(order => order.CreatedOn.Year == currentYear)
                 .Select(order => order);
             FillStatistic(orders, selerDynamics);
             return selerDynamics;
+        }
+
+        public void SendToArchive(long value)
+        {
+            Partner partner = PartnersRepository.GetById(value);
+            String tableName;
+            bool isNewArchive = true;
+            if (partner.ArchiveTableName.IsEmpty())
+            {
+                tableName = String.Format("{0}Archive", partner.Name);
+                partner.ArchiveTableName = tableName;
+                PartnersRepository.Evict(partner);
+                PartnersRepository.SaveOrUpdate(partner);
+            }
+            else
+            {
+                tableName = partner.ArchiveTableName;
+                isNewArchive = false;
+            }
+            OrdersRepository.SendToArchive(value, tableName, isNewArchive);
+        }
+
+        public void RestoreFromArchive(long partnerId)
+        {
+            Partner partner = PartnersRepository.GetById(partnerId);
+            if (!partner.ArchiveTableName.IsEmpty())
+            {
+                OrdersRepository.RestoreFromArchive(partner.ArchiveTableName);
+                PartnersRepository.Evict(partner);
+                partner.ArchiveTableName = null;
+                PartnersRepository.SaveOrUpdate(partner);
+            }
+        }
+
+        public IEnumerable<Order> GetArhivedOrders(string archiveTableName)
+        {
+            if (!archiveTableName.IsEmpty())
+            {
+                var orders = OrdersRepository.GetArchivedOrders(archiveTableName);
+                return orders;
+            }
+            return null;
         }
 
         private void FillStatistic(IEnumerable<Order> orders, IList<SelerDynamic> selerDynamics)
@@ -278,12 +346,6 @@ namespace iosu.Helpers.Response
                 Selers = grouping.Key.Name,
                 Months = GetInfo(grouping)
             }));
-//            foreach (SelerDynamic selerDynamic in selerDynamics)
-//            {
-//                orders.Where(order => order.CreatedOn.Month == selerDynamic.Month.Month)
-//                    .GroupBy(order => order.Partner)
-//                    .ForEach(grouping => selerDynamic.Selers.Add(grouping.Key.Name, grouping.Sum(order => order.Amount)));
-//            }
         }
 
         private Dictionary<Months, long> GetInfo(IGrouping<Partner, Order> grouping)
@@ -294,17 +356,5 @@ namespace iosu.Helpers.Response
             ordersGroup.ForEach(orders => dict.Add((Months)orders.Key, orders.Sum(order => order.Amount)));
             return dict;
         }
-
-//        private void FillMonths(IList<SelerDynamic> selerDynamics)
-//        {
-//            for (int i = 1; i < 13; i++)
-//            {
-//                selerDynamics.Add(new SelerDynamic
-//                {
-//                    Month = new DateTime(1, i, 1),
-//                    Selers = new Dictionary<string, long>()
-//                });
-//            }
-//        }
     }
 }
